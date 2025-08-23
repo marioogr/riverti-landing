@@ -12,6 +12,7 @@ import Layout from "../layouts/Layout.astro";
       <div class="nav-menu">
         <a href="#inicio" class="nav-link">Inicio</a>
         <a href="#servicios" class="nav-link">Servicios</a>
+        <a href="#productos" class="nav-link">Productos</a>
         <a href="#nosotros" class="nav-link">Nosotros</a>
         <a href="#contacto" class="nav-link">Contacto</a>
       </div>
@@ -45,6 +46,36 @@ import Layout from "../layouts/Layout.astro";
       <div class="hero-visual">
         <div class="gradient-orb"></div>
         <div class="gradient-mesh"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Productos / SAAS Section -->
+  <section id="productos" class="products">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Nuestros Productos</h2>
+        <p class="section-subtitle">
+          Soluciones SAAS innovadoras para potenciar tu negocio
+        </p>
+      </div>
+      <div class="products-grid">
+        <div class="product-card">
+          <div class="product-icon">
+            <div class="icon-bg">🏢</div>
+          </div>
+          <h3 class="product-title">RiverTI Prop</h3>
+          <p class="product-description">
+            Software de gestión inmobiliaria con agente de IA. Automatiza la administración de propiedades, contratos, pagos y atención a clientes con la ayuda de RiverTI Prop, tu asistente inteligente.
+          </p>
+          <ul class="product-features">
+            <li>Gestión de propiedades y contratos</li>
+            <li>Agente de IA para consultas y soporte</li>
+            <li>Automatización de cobros y pagos</li>
+            <li>Panel de control intuitivo</li>
+          </ul>
+        </div>
+        <!-- Aquí puedes agregar más productos en el futuro -->
       </div>
     </div>
   </section>
@@ -247,6 +278,10 @@ import Layout from "../layouts/Layout.astro";
             <a href="#servicios">Software a Medida</a>
             <a href="#servicios">Data Science</a>
             <a href="#servicios">Consultoría de TI</a>
+          </div>
+          <div class="footer-column">
+            <h4>Productos</h4>
+            <a href="#productos">RiverTI Prop</a>
           </div>
           <div class="footer-column">
             <h4>Empresa</h4>
@@ -652,10 +687,92 @@ import Layout from "../layouts/Layout.astro";
     font-weight: bold;
   }
 
+  /* Products Section */
+  .products {
+    padding: calc(var(--spacing) * 12) 0;
+    background: var(--dark);
+  }
+
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: calc(var(--spacing) * 4);
+  }
+
+  .product-card {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--border-radius);
+    padding: calc(var(--spacing) * 4);
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .product-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    transform: scaleX(0);
+    transition: var(--transition);
+  }
+
+  .product-card:hover::before {
+    transform: scaleX(1);
+  }
+
+  .product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-hover);
+  }
+
+  .product-icon {
+    margin-bottom: calc(var(--spacing) * 3);
+  }
+
+  .product-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: calc(var(--spacing) * 2);
+    color: var(--light);
+  }
+
+  .product-description {
+    color: var(--gray);
+    line-height: 1.6;
+    margin-bottom: calc(var(--spacing) * 3);
+  }
+
+  .product-features {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .product-features li {
+    color: var(--gray);
+    margin-bottom: calc(var(--spacing));
+    padding-left: calc(var(--spacing) * 3);
+    position: relative;
+  }
+
+  .product-features li::before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: var(--secondary);
+    font-weight: bold;
+  }
+
   /* About Section */
   .about {
     padding: calc(var(--spacing) * 12) 0;
-    background: var(--dark);
+    background: var(--dark-light);
   }
 
   .about-content {
