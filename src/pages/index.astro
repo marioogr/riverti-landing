@@ -240,7 +240,7 @@ import Layout from "../layouts/Layout.astro";
             <div class="contact-icon">📧</div>
             <div>
               <h4>Email</h4>
-              <p>info@rivetti.cl</p>
+              <p>contacto@riverti.cl</p>
             </div>
           </div>
           <div class="contact-item">
@@ -251,32 +251,84 @@ import Layout from "../layouts/Layout.astro";
             </div>
           </div>
         </div>
-        <form class="contact-form">
+        <form class="contact-form" novalidate action="https://api.web3forms.com/submit" method="POST">
+          <!-- Web3Forms API Key -->
+          <input type="hidden" name="access_key" value="656eb5f7-defa-4560-877c-2ad119c3e14f">
+          
+          
+          <!-- Optional: Subject line for the email -->
+          <input type="hidden" name="subject" value="Nueva consulta desde RiverTI Landing">
+          
+          <!-- Optional: From name -->
+          <input type="hidden" name="from_name" value="RiverTI Website">
+          
+          <!-- Status message -->
+          <div class="form-status" id="form-status"></div>
+          
           <div class="form-group">
-            <input type="text" placeholder="Nombre completo" required />
+            <label for="name" class="form-label">Nombre completo</label>
+            <input 
+              type="text" 
+              id="name" 
+              name="name" 
+              placeholder="Ingresa tu nombre completo" 
+              required 
+              autocomplete="name"
+            />
+            <span class="form-error" id="name-error"></span>
           </div>
           <div class="form-group">
-            <input type="email" placeholder="Email" required />
+            <label for="email" class="form-label">Email</label>
+            <input 
+              type="email" 
+              id="email" 
+              name="email" 
+              placeholder="tu@email.com" 
+              required 
+              autocomplete="email"
+            />
+            <span class="form-error" id="email-error"></span>
           </div>
           <div class="form-group">
-            <input type="tel" placeholder="Teléfono" />
+            <label for="phone" class="form-label">Teléfono (opcional)</label>
+            <input 
+              type="tel" 
+              id="phone" 
+              name="phone" 
+              placeholder="+56 9 XXXX XXXX" 
+              autocomplete="tel"
+            />
           </div>
           <div class="form-group">
-            <select required>
+            <label for="service" class="form-label">Servicio de interés</label>
+            <select id="service" name="service" required>
               <option value="">Selecciona un servicio</option>
               <option value="automatizacion">Automatización</option>
               <option value="software">Software a Medida</option>
               <option value="data-science">Data Science</option>
               <option value="consultoria">Consultoría de TI</option>
+              <option value="productos">Productos SAAS</option>
             </select>
+            <span class="form-error" id="service-error"></span>
           </div>
           <div class="form-group">
+            <label for="message" class="form-label">Mensaje</label>
             <textarea
-              placeholder="Cuéntanos sobre tu proyecto"
+              id="message"
+              name="message"
+              placeholder="Cuéntanos sobre tu proyecto y necesidades..."
               rows="4"
               required></textarea>
+            <span class="form-error" id="message-error"></span>
           </div>
-          <button type="submit" class="btn btn-primary">Enviar Consulta</button>
+          
+          <!-- Honeypot field for spam protection -->
+          <input type="checkbox" name="botcheck" style="display: none;">
+          
+          <button type="submit" class="btn btn-primary">
+            <span class="btn-text">Enviar Consulta</span>
+            <span class="btn-loader"></span>
+          </button>
         </form>
       </div>
     </div>
@@ -903,14 +955,25 @@ import Layout from "../layouts/Layout.astro";
     line-height: 1.5;
   }
 
+  /* Contact Form Styles */
   .contact-form {
     display: flex;
     flex-direction: column;
     gap: calc(var(--spacing) * 3);
+    max-width: 100%;
   }
 
   .form-group {
     position: relative;
+    width: 100%;
+  }
+
+  .form-label {
+    display: block;
+    margin-bottom: calc(var(--spacing));
+    color: var(--light);
+    font-weight: 500;
+    font-size: 0.9rem;
   }
 
   .form-group input,
@@ -921,23 +984,186 @@ import Layout from "../layouts/Layout.astro";
     border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: var(--border-radius);
     background: rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(20px);
     color: var(--light);
-    font-family: "Roboto", sans-serif;
+    font-family: inherit;
+    font-size: 1rem;
+    line-height: 1.5;
     transition: var(--transition);
+    box-sizing: border-box;
+    
+    /* Cross-browser compatibility */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    
+    /* Backdrop filter with fallbacks */
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
   }
 
+  /* Select arrow styling for cross-browser compatibility */
+  .form-group select {
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23666666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right calc(var(--spacing) * 2) center;
+    background-size: 20px;
+    padding-right: calc(var(--spacing) * 5);
+  }
+
+  /* Textarea specific styles */
+  .form-group textarea {
+    resize: vertical;
+    min-height: 100px;
+    font-family: inherit;
+  }
+
+  /* Focus states */
   .form-group input:focus,
   .form-group select:focus,
   .form-group textarea:focus {
     outline: none;
     border-color: var(--primary);
     box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
+    background: rgba(255, 255, 255, 0.08);
   }
 
+  /* Placeholder styles */
   .form-group input::placeholder,
   .form-group textarea::placeholder {
     color: var(--gray);
+    opacity: 1; /* Firefox fix */
+  }
+
+  .form-group input::-webkit-input-placeholder,
+  .form-group textarea::-webkit-input-placeholder {
+    color: var(--gray);
+  }
+
+  .form-group input::-moz-placeholder,
+  .form-group textarea::-moz-placeholder {
+    color: var(--gray);
+    opacity: 1;
+  }
+
+  .form-group input:-ms-input-placeholder,
+  .form-group textarea:-ms-input-placeholder {
+    color: var(--gray);
+  }
+
+  /* Error states */
+  .form-error {
+    display: block;
+    color: var(--accent);
+    font-size: 0.85rem;
+    margin-top: calc(var(--spacing) / 2);
+    min-height: 1.2em;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    visibility: hidden;
+  }
+
+  .form-group.error .form-error {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .form-group.error input,
+  .form-group.error select,
+  .form-group.error textarea {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
+  }
+
+  /* Valid states */
+  .form-group.valid input,
+  .form-group.valid select,
+  .form-group.valid textarea {
+    border-color: var(--secondary);
+  }
+
+  /* Touched state - only show errors after user interaction */
+  .form-group:not(.touched) .form-error {
+    display: none;
+  }
+
+  /* Button loading state */
+  .btn {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  .btn .btn-loader {
+    display: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid transparent;
+    border-top: 2px solid currentColor;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-left: calc(var(--spacing));
+  }
+
+  .btn.loading .btn-text {
+    opacity: 0.7;
+  }
+
+  .btn.loading .btn-loader {
+    display: inline-block;
+  }
+
+  /* Success and error button states */
+  .btn.success {
+    background: var(--secondary) !important;
+    border-color: var(--secondary) !important;
+  }
+
+  .btn.error {
+    background: var(--accent) !important;
+    border-color: var(--accent) !important;
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  /* Form status messages */
+  .form-status {
+    padding: calc(var(--spacing) * 2);
+    border-radius: var(--border-radius);
+    margin-bottom: calc(var(--spacing) * 3);
+    font-weight: 500;
+    display: none;
+  }
+
+  .form-status.success {
+    background: rgba(0, 204, 102, 0.1);
+    border: 1px solid rgba(0, 204, 102, 0.3);
+    color: var(--secondary);
+  }
+
+  .form-status.error {
+    background: rgba(255, 107, 53, 0.1);
+    border: 1px solid rgba(255, 107, 53, 0.3);
+    color: var(--accent);
+  }
+
+  /* Responsive improvements */
+  @media (max-width: 768px) {
+    .contact-form {
+      gap: calc(var(--spacing) * 2);
+    }
+    
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      font-size: 16px; /* Prevents zoom on iOS */
+    }
   }
 
   /* Footer */
@@ -1100,54 +1326,393 @@ import Layout from "../layouts/Layout.astro";
   }
 </style>
 
-<script>
-  // Smooth scrolling for navigation links
-  document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
-    anchor.addEventListener("click", function (e) {
-      e.preventDefault();
-      const target = document.querySelector(this.getAttribute("href"));
-      if (target) {
-        target.scrollIntoView({
-          behavior: "smooth",
-          block: "start",
+<script is:inline>
+  // Cross-browser compatibility
+  (function() {
+    'use strict';
+
+    // Wait for DOM to be ready
+    function ready(fn) {
+      if (document.readyState !== 'loading') {
+        fn();
+      } else {
+        document.addEventListener('DOMContentLoaded', fn);
+      }
+    }
+
+    ready(function() {
+      // Smooth scrolling for navigation links
+      var links = document.querySelectorAll('a[href^="#"]');
+      for (var i = 0; i < links.length; i++) {
+        links[i].addEventListener("click", function(e) {
+          e.preventDefault();
+          var href = this.getAttribute("href");
+          if (href) {
+            var target = document.querySelector(href);
+            if (target) {
+              target.scrollIntoView({
+                behavior: "smooth",
+                block: "start",
+              });
+            }
+          }
+        });
+      }
+
+      // Form validation and submission
+      var form = document.querySelector(".contact-form");
+      if (form) {
+        var inputs = form.querySelectorAll('input, select, textarea');
+        var submitBtn = form.querySelector('button[type="submit"]');
+        var statusDiv = form.querySelector('#form-status');
+        
+        // Email validation regex
+        var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        
+        // Phone validation regex (Chilean format)
+        var phoneRegex = /^(\+56|56)?[2-9]\d{8}$/;
+
+        // Function to show status message
+        function showStatus(message, type) {
+          if (statusDiv) {
+            statusDiv.textContent = message;
+            statusDiv.className = 'form-status ' + type;
+            statusDiv.style.display = 'block';
+            
+            // Auto-hide after 5 seconds for success messages
+            if (type === 'success') {
+              setTimeout(function() {
+                statusDiv.style.display = 'none';
+              }, 5000);
+            }
+          }
+        }
+
+        function hideStatus() {
+          if (statusDiv) {
+            statusDiv.style.display = 'none';
+          }
+        }
+
+        // Validation functions
+        function validateField(field, showErrors) {
+          if (!field) return false;
+          
+          if (showErrors === undefined) showErrors = true;
+          
+          var value = field.value ? field.value.trim() : '';
+          var fieldName = field.name || '';
+          var formGroup = field.closest('.form-group');
+          var isRequired = field.hasAttribute('required');
+          
+          if (!formGroup) return false;
+          
+          var errorElement = formGroup.querySelector('.form-error');
+          
+          var isValid = true;
+          var errorMessage = '';
+
+          // Clear previous states
+          formGroup.classList.remove('error', 'valid');
+          
+          // Only validate if field is required OR if it has content
+          if (isRequired || value) {
+            if (isRequired && !value) {
+              isValid = false;
+              errorMessage = 'Este campo es obligatorio';
+            } else if (fieldName === 'email' && value && !emailRegex.test(value)) {
+              isValid = false;
+              errorMessage = 'Por favor ingresa un email válido';
+            } else if (fieldName === 'phone' && value && !phoneRegex.test(value.replace(/\s/g, ''))) {
+              isValid = false;
+              errorMessage = 'Por favor ingresa un teléfono válido (+56 9 XXXX XXXX)';
+            } else if (fieldName === 'name' && value && value.length < 2) {
+              isValid = false;
+              errorMessage = 'El nombre debe tener al menos 2 caracteres';
+            } else if (fieldName === 'message' && value && value.length < 10) {
+              isValid = false;
+              errorMessage = 'El mensaje debe tener al menos 10 caracteres';
+            } else if (fieldName === 'service' && isRequired && !value) {
+              isValid = false;
+              errorMessage = 'Por favor selecciona un servicio';
+            }
+          }
+
+          if (errorElement) {
+            errorElement.textContent = errorMessage;
+          }
+          
+          // Only show validation states if the field has been touched and we should show errors
+          if (formGroup.classList.contains('touched') && showErrors) {
+            if (isValid && value) {
+              formGroup.classList.add('valid');
+            } else if (!isValid) {
+              formGroup.classList.add('error');
+            }
+          }
+
+          // For required fields, return false if empty, for optional fields return true if empty
+          if (!isRequired && !value) {
+            return true;
+          }
+
+          return isValid;
+        }
+
+        function validateForm(showErrors) {
+          if (showErrors === undefined) showErrors = false;
+          
+          var isFormValid = true;
+          
+          // Check required fields specifically
+          var nameField = form.querySelector('#name');
+          var emailField = form.querySelector('#email');
+          var serviceField = form.querySelector('#service');
+          var messageField = form.querySelector('#message');
+          
+          // Validate each required field
+          if (!nameField || !nameField.value.trim()) {
+            isFormValid = false;
+          } else if (!validateField(nameField, showErrors)) {
+            isFormValid = false;
+          }
+          
+          if (!emailField || !emailField.value.trim()) {
+            isFormValid = false;
+          } else if (!validateField(emailField, showErrors)) {
+            isFormValid = false;
+          }
+          
+          if (!serviceField || !serviceField.value) {
+            isFormValid = false;
+          }
+          
+          if (!messageField || !messageField.value.trim()) {
+            isFormValid = false;
+          } else if (!validateField(messageField, showErrors)) {
+            isFormValid = false;
+          }
+          
+          // Validate optional phone field if it has content
+          var phoneField = form.querySelector('#phone');
+          if (phoneField && phoneField.value.trim()) {
+            validateField(phoneField, showErrors);
+          }
+          
+          // Enable/disable submit button
+          if (submitBtn) {
+            submitBtn.disabled = !isFormValid;
+          }
+          
+          return isFormValid;
+        }
+
+        // Add event listeners to inputs
+        for (var i = 0; i < inputs.length; i++) {
+          var input = inputs[i];
+          
+          // Mark field as touched when user starts interacting
+          input.addEventListener('focus', function() {
+            var formGroup = this.closest('.form-group');
+            if (formGroup) {
+              formGroup.classList.add('touched');
+            }
+          });
+
+          // Real-time validation on blur (when user leaves the field)
+          input.addEventListener('blur', function() {
+            var formGroup = this.closest('.form-group');
+            if (formGroup) {
+              formGroup.classList.add('touched');
+            }
+            validateField(this, true);
+            validateForm(false);
+          });
+
+          // Validate while typing (but only show errors if already touched)
+          input.addEventListener('input', function() {
+            var field = this;
+            var formGroup = field.closest('.form-group');
+            
+            // Always update button state when user types
+            setTimeout(function() {
+              if (formGroup && formGroup.classList.contains('touched')) {
+                validateField(field, true);
+              }
+              validateForm(false);
+            }, 100);
+          });
+        }
+
+        // Form submission
+        form.addEventListener("submit", function(e) {
+          e.preventDefault();
+          
+          // Hide any previous status messages
+          hideStatus();
+          
+          // Mark all fields as touched and validate with errors
+          for (var i = 0; i < inputs.length; i++) {
+            var input = inputs[i];
+            var formGroup = input.closest('.form-group');
+            if (formGroup) {
+              formGroup.classList.add('touched');
+            }
+          }
+          
+          if (!validateForm(true)) {
+            // Focus on first invalid field
+            var firstInvalidField = form.querySelector('.form-group.error input, .form-group.error select, .form-group.error textarea');
+            if (firstInvalidField && firstInvalidField.focus) {
+              firstInvalidField.focus();
+            }
+            showStatus('Por favor, completa todos los campos requeridos correctamente.', 'error');
+            return;
+          }
+
+          var btnText = submitBtn ? submitBtn.querySelector('.btn-text') : null;
+
+          // Show loading state
+          if (submitBtn) {
+            submitBtn.classList.add('loading');
+            submitBtn.classList.remove('success', 'error');
+            submitBtn.disabled = true;
+          }
+          if (btnText) {
+            btnText.textContent = "Enviando...";
+          }
+
+          // Create FormData object
+          var formData = new FormData(form);
+
+          // Submit to Web3Forms
+          fetch('https://api.web3forms.com/submit', {
+            method: 'POST',
+            headers: { 'Accept': 'application/json' },
+            body: formData
+          })
+          .then(function(response) {
+            return response.json();
+          })
+          .then(function(data) {
+            if (data.success) {
+              // Success state
+              if (submitBtn) {
+                submitBtn.classList.remove('loading');
+                submitBtn.classList.add('success');
+              }
+              if (btnText) {
+                btnText.textContent = "¡Enviado!";
+              }
+              
+              // Show success message
+              showStatus('¡Gracias por tu consulta! Tu mensaje ha sido enviado exitosamente. Nos pondremos en contacto contigo pronto.', 'success');
+
+              // Confirmación simple sin redirección
+              alert("Gracias por tu consulta. Te contactaremos pronto.");
+              
+              // Reset form
+              form.reset();
+              
+              for (var i = 0; i < inputs.length; i++) {
+                var input = inputs[i];
+                var formGroup = input.closest('.form-group');
+                if (formGroup) {
+                  formGroup.classList.remove('error', 'valid', 'touched');
+                  var errorElement = formGroup.querySelector('.form-error');
+                  if (errorElement) {
+                    errorElement.textContent = '';
+                  }
+                }
+              }
+              
+              // Reset button
+              setTimeout(function() {
+                if (btnText) {
+                  btnText.textContent = "Enviar Consulta";
+                }
+                if (submitBtn) {
+                  submitBtn.classList.remove('success');
+                  submitBtn.disabled = true; // Keep disabled until form is valid again
+                }
+              }, 3000);
+              
+            } else {
+              // Error from Web3Forms
+              throw new Error(data.message || 'Error al enviar el formulario');
+            }
+          })
+          .catch(function(error) {
+            console.error('Error:', error);
+            
+            // Error state
+            if (submitBtn) {
+              submitBtn.classList.remove('loading');
+              submitBtn.classList.add('error');
+            }
+            if (btnText) {
+              btnText.textContent = "Error al enviar";
+            }
+            
+            // Show error message
+            showStatus('Hubo un problema al enviar tu consulta. Por favor, inténtalo de nuevo o contáctanos directamente a contacto@riverti.cl', 'error');
+            
+            // Reset button after error
+            setTimeout(function() {
+              if (btnText) {
+                btnText.textContent = "Enviar Consulta";
+              }
+              if (submitBtn) {
+                submitBtn.classList.remove('error');
+                submitBtn.disabled = false;
+              }
+            }, 3000);
+          });
+        });
+
+        // Initial setup - enable button state checking
+        if (submitBtn) {
+          submitBtn.disabled = true; // Start disabled
+        }
+        
+        // Initial validation (without showing errors)
+        validateForm(false);
+      }
+
+      // Navigation scroll effect
+      function handleNavScroll() {
+        var nav = document.querySelector(".nav");
+        if (nav) {
+          var scrolled = window.pageYOffset || document.documentElement.scrollTop;
+          if (scrolled > 50) {
+            nav.style.background = "rgba(10, 10, 10, 0.98)";
+          } else {
+            nav.style.background = "rgba(10, 10, 10, 0.95)";
+          }
+        }
+      }
+
+      // Add scroll listener with throttling for better performance
+      var scrollTimeout = null;
+      window.addEventListener("scroll", function() {
+        if (!scrollTimeout) {
+          scrollTimeout = setTimeout(function() {
+            handleNavScroll();
+            scrollTimeout = null;
+          }, 10);
+        }
+      });
+
+      // Mobile navigation toggle (if needed in the future)
+      var navToggle = document.querySelector('.nav-toggle');
+      var navMenu = document.querySelector('.nav-menu');
+      
+      if (navToggle && navMenu) {
+        navToggle.addEventListener('click', function() {
+          navMenu.classList.toggle('active');
         });
       }
     });
-  });
 
-  // Form submission
-  document
-    .querySelector(".contact-form")
-    .addEventListener("submit", function (e) {
-      e.preventDefault();
-
-      // Simple form validation and submission simulation
-      const formData = new FormData(this);
-
-      // Simulate form submission
-      const button = this.querySelector('button[type="submit"]');
-      const originalText = button.textContent;
-
-      button.textContent = "Enviando...";
-      button.disabled = true;
-
-      setTimeout(() => {
-        alert(
-          "¡Gracias por tu consulta! Nos pondremos en contacto contigo pronto."
-        );
-        this.reset();
-        button.textContent = originalText;
-        button.disabled = false;
-      }, 1000);
-    });
-
-  // Add scroll effect to navigation
-  window.addEventListener("scroll", function () {
-    const nav = document.querySelector(".nav");
-    if (window.scrollY > 50) {
-      nav.style.background = "rgba(10, 10, 10, 0.98)";
-    } else {
-      nav.style.background = "rgba(10, 10, 10, 0.95)";
-    }
-  });
+  })();
 </script>
