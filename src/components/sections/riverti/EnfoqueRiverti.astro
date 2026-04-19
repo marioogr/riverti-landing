@@ -1,0 +1,110 @@
+---
+const pillars = [
+  {
+    title: 'Precisión sobre velocidad',
+    body: 'Una métrica útil debe soportar revisión y discusión. La velocidad no reemplaza esa exigencia.'
+  },
+  {
+    title: 'Metodología explícita',
+    body: 'Documentamos cómo se calcula cada cifra para que pueda ser auditada, replicada y discutida.'
+  },
+  {
+    title: 'Datos reales',
+    body: 'Trabajamos con fuentes primarias y cadenas de transformación trazables, no con supuestos convenientes.'
+  },
+  {
+    title: 'Construcción incremental',
+    body: 'Liberamos en cortes acotados, observamos uso real y ajustamos. Preferimos acumular evidencia antes que promesas.'
+  },
+  {
+    title: 'Foco en el problema',
+    body: 'Cada pieza de producto responde a una decisión concreta. Lo accesorio queda fuera.'
+  }
+];
+---
+
+<section id="enfoque" class="section enfoque">
+  <div class="container grid">
+    <header class="head reveal">
+      <p class="eyebrow">Enfoque</p>
+      <h2>Cómo trabaja Riverti cuando construye producto y capa de datos.</h2>
+      <p class="lead">
+        No son frases institucionales. Son criterios operativos que usamos para priorizar, modelar, implementar y entregar.
+      </p>
+    </header>
+
+    <ul class="pillars">
+      {pillars.map((p, i) => (
+        <li class="pillar reveal" style={`--d:${i * 70}ms`}>
+          <span class="bullet" aria-hidden="true"></span>
+          <div>
+            <h3>{p.title}</h3>
+            <p>{p.body}</p>
+          </div>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .grid {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    gap: 5rem;
+    align-items: start;
+  }
+
+  .head .eyebrow { margin-bottom: 1rem; }
+  .head h2 { margin-bottom: 1.25rem; }
+  .head { position: sticky; top: 6.5rem; }
+
+  .pillars {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    border-top: 1px solid var(--line);
+  }
+
+  .pillar {
+    display: grid;
+    grid-template-columns: 56px 1fr;
+    gap: 1rem;
+    padding: 1.5rem 0;
+    border-bottom: 1px solid var(--line);
+    transition-delay: var(--d, 0ms);
+  }
+
+  .bullet {
+    width: 2.2rem;
+    height: 2.2rem;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    background: var(--bg-soft);
+    margin-top: 0.1rem;
+    position: relative;
+  }
+
+  .bullet::before {
+    content: '';
+    position: absolute;
+    inset: calc(50% - 3px);
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--fg-muted);
+  }
+
+  .pillar h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.4rem;
+    color: var(--fg);
+  }
+
+  .pillar p { max-width: 56ch; }
+
+  @media (max-width: 900px) {
+    .grid { grid-template-columns: 1fr; gap: 3rem; }
+    .head { position: static; }
+  }
+</style>

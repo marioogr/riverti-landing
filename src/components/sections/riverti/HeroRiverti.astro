@@ -1,0 +1,101 @@
+---
+---
+
+<section class="hero" aria-labelledby="hero-title">
+  <div class="hero-bg" aria-hidden="true">
+    <svg class="flow" viewBox="0 0 1440 480" preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <linearGradient id="line-grad" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0" stop-color="#9aa0aa" stop-opacity="0" />
+          <stop offset="0.5" stop-color="#9aa0aa" stop-opacity="0.22" />
+          <stop offset="1" stop-color="#9aa0aa" stop-opacity="0" />
+        </linearGradient>
+      </defs>
+      <g stroke="url(#line-grad)" stroke-width="1" fill="none">
+        <path d="M -120 320 Q 360 240 720 280 T 1560 240" />
+        <path d="M -120 380 Q 360 320 720 350 T 1560 320" opacity="0.55" />
+      </g>
+    </svg>
+  </div>
+
+  <div class="container hero-inner">
+    <p class="eyebrow reveal">Riverti</p>
+    <h1 id="hero-title" class="reveal" style="--d:60ms">
+      Productos y sistemas de datos para decisiones que necesitan método.
+    </h1>
+    <p class="lead reveal" style="--d:140ms">
+      Diseñamos y operamos capas de datos que integran fuentes, modelan métricas y entregan información útil a equipos de analítica, finanzas, riesgo y operaciones.
+    </p>
+    <div class="hero-actions reveal" style="--d:220ms">
+      <a href="#contacto" class="btn btn-primary">
+        Agendar conversación
+        <span class="arrow" aria-hidden="true">→</span>
+      </a>
+      <a href="#productos" class="btn btn-ghost">Ver productos</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    padding-top: clamp(7rem, 12vh, 9rem);
+    padding-bottom: clamp(4rem, 8vh, 6rem);
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    mask-image: radial-gradient(ellipse 75% 60% at 50% 60%, #000 30%, transparent 85%);
+  }
+
+  .flow {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    animation: drift 28s ease-in-out infinite alternate;
+  }
+
+  @keyframes drift {
+    from { transform: translate3d(0, 0, 0); }
+    to { transform: translate3d(-24px, -8px, 0); }
+  }
+
+  .hero-inner {
+    position: relative;
+    z-index: 1;
+    max-width: 64rem;
+  }
+
+  .eyebrow {
+    margin-bottom: 1.25rem;
+  }
+
+  h1 {
+    margin-bottom: 1.5rem;
+    max-width: 22ch;
+  }
+
+  .lead {
+    margin-bottom: 2rem;
+    max-width: 56ch;
+  }
+
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .reveal {
+    transition-delay: var(--d, 0ms);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .flow { animation: none; }
+  }
+</style>

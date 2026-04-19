@@ -1,0 +1,106 @@
+---
+const groups = [
+  {
+    label: 'Datos',
+    items: [
+      { name: 'Pipelines de datos', detail: 'Ingesta, transformación y actualización programada con criterios de observabilidad.' },
+      { name: 'Scraping e integración de fuentes', detail: 'Extracción estructurada desde sitios, APIs y sistemas internos con tolerancia a cambios.' },
+      { name: 'Modelamiento de métricas', detail: 'Definición, agregación y validación de indicadores comparables y reproducibles.' }
+    ]
+  },
+  {
+    label: 'Entrega',
+    items: [
+      { name: 'Dashboards y vistas analíticas', detail: 'Interfaces centradas en seguimiento, comparación y lectura operativa del dato.' },
+      { name: 'APIs', detail: 'Servicios versionados para consumir datos, métricas y señales desde sistemas internos.' },
+      { name: 'Automatización', detail: 'Procesos que reemplazan trabajo manual recurrente sobre datos, monitoreo y reportes.' }
+    ]
+  }
+];
+---
+
+<section id="capacidades" class="section">
+  <div class="container">
+    <header class="section-head reveal">
+      <p class="eyebrow">Capacidades</p>
+      <h2>Capacidades para resolver el ciclo completo del dato sin inflar la interfaz.</h2>
+      <p class="lead">
+        Riverti combina ingeniería de datos, lógica de producto y mecanismos de entrega para que la información sirva fuera del notebook.
+      </p>
+    </header>
+
+    <div class="cap-grid">
+      {groups.map((g, gi) => (
+        <div class="cap-group reveal" style={`--d:${gi * 100}ms`}>
+          <span class="label">{g.label}</span>
+          <ul>
+            {g.items.map((it) => (
+              <li>
+                <h3>{it.name}</h3>
+                <p>{it.detail}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .cap-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+  }
+
+  .cap-group {
+    transition-delay: var(--d, 0ms);
+  }
+
+  .label {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--fg-dim);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--line);
+    margin-bottom: 1.5rem;
+  }
+
+  .cap-group ul {
+    display: flex;
+    flex-direction: column;
+    gap: 1.4rem;
+  }
+
+  .cap-group li {
+    padding-bottom: 1.2rem;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .cap-group li:last-child {
+    padding-bottom: 0;
+    border-bottom: 0;
+  }
+
+  .cap-group h3 {
+    font-size: 1rem;
+    font-weight: 500;
+    margin-bottom: 0.35rem;
+  }
+
+  .cap-group p {
+    font-size: 0.9375rem;
+    max-width: 48ch;
+  }
+
+  @media (max-width: 768px) {
+    .cap-grid {
+      grid-template-columns: 1fr;
+      gap: 3rem;
+    }
+  }
+</style>

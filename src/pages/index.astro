@@ -1,0 +1,29 @@
+---
+import BaseLayout from '../components/layout/BaseLayout.astro';
+import Header from '../components/layout/Header.astro';
+import Footer from '../components/layout/Footer.astro';
+import HeroRiverti from '../components/sections/riverti/HeroRiverti.astro';
+import QueHaceRiverti from '../components/sections/riverti/QueHaceRiverti.astro';
+import ProductosRiverti from '../components/sections/riverti/ProductosRiverti.astro';
+import EnfoqueRiverti from '../components/sections/riverti/EnfoqueRiverti.astro';
+import CapacidadesRiverti from '../components/sections/riverti/CapacidadesRiverti.astro';
+import CierreRiverti from '../components/sections/riverti/CierreRiverti.astro';
+---
+
+<BaseLayout
+  title="Riverti — Productos y soluciones de datos"
+  description="Riverti construye productos basados en datos: pipelines, modelamiento de métricas, dashboards y APIs para decidir con información defendible."
+>
+  <Header brand="riverti" />
+
+  <main id="main-content">
+    <HeroRiverti />
+    <QueHaceRiverti />
+    <ProductosRiverti />
+    <EnfoqueRiverti />
+    <CapacidadesRiverti />
+    <CierreRiverti />
+  </main>
+
+  <Footer />
+</BaseLayout>

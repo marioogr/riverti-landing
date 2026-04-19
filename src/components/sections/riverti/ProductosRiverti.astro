@@ -1,0 +1,210 @@
+---
+const products = [
+  {
+    name: 'Maipo',
+    status: 'En operación',
+    available: true,
+    summary: 'Plataforma de monitoreo de precios e inflación preliminar.',
+    body: 'Recolecta y normaliza precios desde múltiples canales para entregar señales tempranas de variación antes de la cifra oficial.',
+    href: '/maipo',
+    tags: ['Datos económicos', 'Inflación preliminar']
+  },
+  {
+    name: 'Próximas líneas',
+    status: 'En evaluación',
+    available: false,
+    summary: 'La estructura del sitio y del portafolio está preparada para sumar nuevos productos cuando haya operación real detrás.',
+    body: 'No publicamos fichas vacías ni roadmaps inflados. Los próximos productos aparecerán aquí cuando exista una capa de datos estable y un problema claro que resolver.',
+    href: null,
+    tags: []
+  }
+];
+---
+
+<section id="productos" class="section">
+  <div class="container">
+    <header class="section-head reveal">
+      <p class="eyebrow">Productos</p>
+      <h2>Productos construidos con el mismo criterio técnico.</h2>
+      <p class="lead">
+        Cada producto parte desde un problema concreto, una metodología explícita y una operación sostenida. La estructura es escalable, pero el portafolio se publica con criterio.
+      </p>
+    </header>
+
+    <ul class="products">
+      {products.map((p, i) => (
+        <li class={`product reveal ${p.available ? '' : 'is-upcoming'}`} style={`--d:${i * 80}ms`}>
+          <div class="product-top">
+            <span class={`status ${p.available ? '' : 'muted'}`}>
+              <span class={`dot ${p.available ? '' : 'dim'}`} aria-hidden="true"></span>
+              {p.status}
+            </span>
+            {p.tags.length > 0 && (
+              <ul class="tags">
+                {p.tags.map((t) => <li>{t}</li>)}
+              </ul>
+            )}
+          </div>
+
+          <div class="product-name">
+            <h3>{p.name}</h3>
+            {p.available && p.href && (
+              <a href={p.href} class="link" aria-label={`Conocer ${p.name}`}>
+                Ver producto
+                <span class="arrow" aria-hidden="true">→</span>
+              </a>
+            )}
+          </div>
+
+          <div class="product-copy">
+            <p class="summary">{p.summary}</p>
+            {p.body && <p class="body">{p.body}</p>}
+          </div>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .products {
+    display: flex;
+    flex-direction: column;
+    border-top: 1px solid var(--line);
+  }
+
+  .product {
+    padding: 3.5rem 0;
+    border-bottom: 1px solid var(--line);
+    transition-delay: var(--d, 0ms);
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.75rem;
+  }
+
+  .product-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--fg-muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .status.muted { color: var(--fg-dim); }
+
+  .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--fg);
+    box-shadow: 0 0 0 3px rgba(232, 234, 238, 0.08);
+    animation: pulse 2.4s ease-in-out infinite;
+  }
+
+  .dot.dim {
+    background: var(--fg-dim);
+    box-shadow: none;
+    animation: none;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+  }
+
+  .tags {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .tags li {
+    font-size: 0.75rem;
+    color: var(--fg-dim);
+    padding: 0.25rem 0.625rem;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+  }
+
+  .product-name {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .product-name h3 {
+    font-size: clamp(1.5rem, 2.4vw, 2rem);
+    font-weight: 500;
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+    color: var(--fg);
+  }
+
+  .is-upcoming .product-name h3 {
+    color: var(--fg-dim);
+  }
+
+  .link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--fg);
+    font-weight: 500;
+    font-size: 0.8125rem;
+    padding-bottom: 0.125rem;
+    border-bottom: 1px solid var(--line-strong);
+    transition: border-color 200ms var(--ease), color 200ms var(--ease);
+  }
+
+  .link:hover {
+    color: var(--fg);
+    border-bottom-color: var(--fg);
+  }
+
+  .link .arrow { transition: transform 200ms var(--ease); }
+  .link:hover .arrow { transform: translateX(3px); }
+
+  .product-copy {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: start;
+  }
+
+  .summary {
+    font-size: 1rem;
+    color: var(--fg);
+    line-height: 1.55;
+    max-width: 36ch;
+  }
+
+  .body {
+    font-size: 0.875rem;
+    color: var(--fg-muted);
+    line-height: 1.7;
+    max-width: 58ch;
+  }
+
+  @media (max-width: 768px) {
+    .product { padding: 2.5rem 0; gap: 1.5rem; }
+    .product-copy {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+    .product-name { gap: 1rem; }
+    .summary { font-size: 1.0625rem; }
+  }
+</style>
